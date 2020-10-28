@@ -1,16 +1,26 @@
 from requests_html import HTMLSession
 import datetime
-
+import re
 
 def get_info(r):
     #改行単位でsplit
     #参考URL：https://karupoimou.hatenablog.com/entry/2019/07/08/112734
     page = r.text.split("\n")
+
+    #駅名を抽出
+    #参考URL：https://note.nkmk.me/python-str-extract/
+    for i in range(len(page)):
+        p = page[i]
+        if "\"rsf\"" in p:
+            name = re.findall('value="(.*)"', p)
+
     for i in range(len(page)):
         p = page[i]
         if "運行情報" in p:
-            return page[i+1]#「運行情報」文字列の次の行に内容が書いてある．
+            unko = page[i+1]#「運行情報」文字列の次の行に内容が書いてある．
 
+
+    return name[0] +"駅は"+ unko
 def get_timetable(r):
 
     #時刻表（時間）を取得
@@ -93,6 +103,7 @@ if __name__ == '__main__':
 
     #結果出力
     print("今日もおつかれさまでした．")
-    print("京急線は"+ info)
-    print("次の発車は")
-    print(dep_time)
+    print(info)
+    print("次の発車は,")
+    [print(i) for i in dep_time]
+
