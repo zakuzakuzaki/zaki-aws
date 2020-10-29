@@ -1,2 +1,2 @@
 # zaki-aws
-for aws
+AWSに実装するためのデータ
